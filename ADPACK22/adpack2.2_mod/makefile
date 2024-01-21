@@ -6,11 +6,12 @@
 #CC      = gcc -std=c99 -O3 -I/usr/local/include 
 #LIB     = -llapack -lblas
 
-CC      = gcc -Dnoomp -std=c99 -O3 -I/usr/local/include -I/home/ozaki/include
-LIB     = -L/home/ozaki/lib -latlas_p4 -static
+# MKLROOT = /opt/intel/mkl/lib/intel64
+CC      = gcc -Dnoomp -std=c99 -O3 -I/usr/local/include -mcmodel=large
+LIB     =  -Wl,--start-group ${MKLROOT}/lib/libmkl_intel_lp64.a ${MKLROOT}/lib/libmkl_intel_thread.a ${MKLROOT}/lib/libmkl_core.a -Wl,--end-group -liomp5 -lpthread -ldl -lm 
 
 CFLAGS  = -g
-LDFLAGS = -lm
+LDFLAGS = 
 
 OBJS    = adpack.o Inputtools.o readfile.o Set_Init.o addfunc.o \
           All_Electron.o Total_Energy.o \
@@ -24,7 +25,8 @@ OBJS    = adpack.o Inputtools.o readfile.o Set_Init.o addfunc.o \
           Generate_VNL.o Log_DeriF.o ghost.o Restart.o Make_EDPP.o \
           Find_LESP.o Empty_VPS.o QuickSort.o mimic_omp.o \
           FEM_All_Electron.o FEMLDA_All_Electron.o \
-          FEMHF_All_Electron.o FEMHF_ERI.o FEMHF_JKLM.o 
+          FEMHF_All_Electron.o FEMHF_ERI.o FEMHF_JKLM.o \
+          All_Electron_NSCF.o
 
 PROG    = adpack
 DESTDIR = ../work

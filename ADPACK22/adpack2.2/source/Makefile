@@ -1,8 +1,8 @@
-CC      = icx -Dnoomp -std=c99 -O3 -I/usr/local/include -I${MKLROOT}/include -DMKL_ILP64 -mcmodel=large
+CC      = gcc -Dnoomp -std=c99 -O3 -I/usr/local/include -I${MKLROOT}/include -DMKL_ILP64 -m64 -mcmodel=large
 LIB     = -static
 
 CFLAGS  = -g
-LDFLAGS = -Wl,--start-group ${MKLROOT}/lib/libmkl_intel_ilp64.a ${MKLROOT}/lib/libmkl_intel_thread.a ${MKLROOT}/lib/libmkl_core.a -Wl,--end-group -liomp5 -lpthread -lm -ldl
+LDFLAGS =  -Wl,--start-group ${MKLROOT}/lib/libmkl_intel_ilp64.a ${MKLROOT}/lib/libmkl_gnu_thread.a ${MKLROOT}/lib/libmkl_core.a -Wl,--end-group -lgomp -lpthread -lm -ldl
 
 OBJS    = adpack.o Inputtools.o readfile.o Set_Init.o addfunc.o \
           All_Electron.o Total_Energy.o \
