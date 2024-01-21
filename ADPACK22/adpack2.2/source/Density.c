@@ -12,7 +12,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
-#include "adpack.h"
+#include "adpack_ext.h"
 
 #define kB            0.00008617251324000000   /* eV/K           */   
 

@@ -14,7 +14,8 @@
 #include <stdlib.h>
 #include <math.h>
 #include <time.h>
-#include "adpack.h"
+
+#include "adpack_ext.h"
 
 static void Check_Sum_Num_Electrons();
 static void Simpson_Normalization(int so, int n, int l);

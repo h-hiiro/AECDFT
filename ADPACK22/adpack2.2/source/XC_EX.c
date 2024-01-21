@@ -13,7 +13,7 @@
 ***********************************************************************/
 
 #include <math.h>
-#include "adpack.h"
+#include "adpack_ext.h"
 
 #define ZERO   0.00
 #define ONE    1.00

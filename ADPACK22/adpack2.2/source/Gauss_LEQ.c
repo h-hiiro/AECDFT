@@ -13,7 +13,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
-#include "adpack.h"
+#include "adpack_ext.h"
 
 void Gauss_LEQ(int n, double a[ASIZE6][ASIZE6], double x[ASIZE6])
 {

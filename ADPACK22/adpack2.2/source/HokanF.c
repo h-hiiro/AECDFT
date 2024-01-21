@@ -12,7 +12,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
-#include "adpack.h"
+#include "adpack_ext.h"
 
 double HokanF(double R, double RadF[ASIZE1], int waru_switch)
 {

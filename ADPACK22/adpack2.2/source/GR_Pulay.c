@@ -16,7 +16,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
-#include "adpack.h"
+#include "adpack_ext.h"
 
 static void Inverse(int n, double a[ASIZE9][ASIZE9],
                     double ia[ASIZE9][ASIZE9]);

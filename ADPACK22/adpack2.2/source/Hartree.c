@@ -13,7 +13,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
-#include "adpack.h"
+#include "adpack_ext.h"
 
 void Hartree(double rh[ASIZE1], double h[ASIZE1])
 {

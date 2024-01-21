@@ -13,7 +13,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
-#include "adpack.h"
+#include "adpack_ext.h"
 
 static double DMF_Func(int eq_type, int cp, double ep, int NL, double kappa,
                        double M, double L,

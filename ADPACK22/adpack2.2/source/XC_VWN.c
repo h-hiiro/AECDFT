@@ -14,7 +14,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
-#include "adpack.h"
+#include "adpack_ext.h"
 
 void XC_VWN(double rh[ASIZE1], double xc[ASIZE1], int P_switch)
 {

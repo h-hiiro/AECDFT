@@ -13,7 +13,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
-#include "adpack.h"
+#include "adpack_ext.h"
 
 void Density_V(int state_num, double OcpN0[ASIZE15][2][ASIZE3+1][ASIZE3])
 {

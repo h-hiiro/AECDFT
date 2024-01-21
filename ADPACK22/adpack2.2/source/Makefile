@@ -1,10 +1,11 @@
-CC      = gcc -Dnoomp -std=c99 -O3 -I/usr/local/include -I${MKLROOT}/include -DMKL_ILP64 -m64 -mcmodel=large
-LIB     = -static
+CC2      = gcc -Dnoomp -std=c99 -O3 -I/usr/local/include -mcmodel=large
+CC      = gcc -Dnoomp -std=c99 -O3 -I/usr/local/include  -mcmodel=medium
+LIB     =  -L/source/lapack/lapack-3.12.0 -llapack -lrefblas -ldl -lm -lgfortran
 
 CFLAGS  = -g
-LDFLAGS =  -Wl,--start-group ${MKLROOT}/lib/libmkl_intel_ilp64.a ${MKLROOT}/lib/libmkl_gnu_thread.a ${MKLROOT}/lib/libmkl_core.a -Wl,--end-group -lgomp -lpthread -lm -ldl
+LDFLAGS = -static
 
-OBJS    = adpack.o Inputtools.o readfile.o Set_Init.o addfunc.o \
+OBJS2    = adpack.o Inputtools.o readfile.o Set_Init.o addfunc.o \
           All_Electron.o Total_Energy.o \
           Density.o Density_V.o Density_PCC.o Core.o Hartree.o \
           HokanF.o XC_Xa.o XC_CA.o XC_VWN.o \
@@ -17,6 +18,11 @@ OBJS    = adpack.o Inputtools.o readfile.o Set_Init.o addfunc.o \
           Find_LESP.o Empty_VPS.o QuickSort.o mimic_omp.o \
           FEM_All_Electron.o FEMLDA_All_Electron.o \
           FEMHF_All_Electron.o FEMHF_ERI.o FEMHF_JKLM.o 
+
+OBJS    = adpack.o mimic_omp.o readfile.o Inputtools.o Set_Init.o All_Electron.o Initial_Density.o \
+	Core.o Hartree.o VP.o Hamming_O.o Hamming_I.o GR_Pulay.o XC_CA.o XC_Xa.o XC_VWN.o XC4atom_PBE.o \
+	Simple_Mixing.o Density.o Total_Energy.o Gauss_LEQ.o XC_PBE.o addfunc.o XC_PW91C.o XC_EX.o \
+	Output.o HokanF.o MPAO_RadialF.o Restart.o Density_V.o Frho_V.o
 
 PROG    = adpack
 DESTDIR = ../work

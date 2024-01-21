@@ -1,14 +1,5 @@
-# CC      = pgcc -Mbounds -Ktrap=fp
-# CC      = gcc -std=c99 -O3 
-# CFLAGS  = -g
-#CC      = icc -openmp -O2 -I/usr/local/include -I/home/ozaki/include
-#CC      = gcc -std=c99 -O3 -I/usr/local/include -I/home/ozaki/include
-#CC      = gcc -std=c99 -O3 -I/usr/local/include 
-#LIB     = -llapack -lblas
-
-# MKLROOT = /opt/intel/mkl/lib/intel64
 CC      = gcc -Dnoomp -std=c99 -O3 -I/usr/local/include -mcmodel=large
-LIB     =  -Wl,--start-group ${MKLROOT}/lib/libmkl_intel_lp64.a ${MKLROOT}/lib/libmkl_intel_thread.a ${MKLROOT}/lib/libmkl_core.a -Wl,--end-group -liomp5 -lpthread -ldl -lm 
+LIB     =  -L/source/lapack/lapack-3.12.0 -llapack -lrefblas -ldl -lm -lgfortran -z muldefs
 
 CFLAGS  = -g
 LDFLAGS = 

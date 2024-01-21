@@ -12,7 +12,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
-#include "adpack.h"
+
+#include "adpack_ext.h"
 
 void Set_Init()
 {

@@ -16,7 +16,7 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <unistd.h>
-#include "adpack.h"
+#include "adpack_ext.h"
 
 static void Out_Std(FILE *fp, char *filein); 
 static void Out_AllLOG(char *filein);

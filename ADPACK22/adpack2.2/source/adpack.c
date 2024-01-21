@@ -1,6 +1,6 @@
 /**************************************************************************
     Copyright (C), 2002-2007, Taisuke Ozaki.
-    The program package follows the terms of GNU GPL. 
+    The program package follows the terms of GNU GPL.
 
   adpack.c:
 
@@ -14,7 +14,7 @@
          Martins) methods,
       3) calculations of charge density for the partial core correction,
       4) calculations of pseudo atomic orbitals for confinement pseudo
-         potentials.  
+         potentials.
 
   Log of adpack.c:
 
@@ -36,9 +36,9 @@
 #include <omp.h>
 #endif
 
-int main(int argc, char *argv[])
+int main(int argc, char **argv)
 {
-  int i,k,po,ip;
+  int i, k, po, ip;
 
   /****************************************************
      set the number of threads for openmp
@@ -48,19 +48,23 @@ int main(int argc, char *argv[])
   openmp_threads_num = 1; /* default */
 
   po = 0;
-  for (i=0; i<argc; i++){
-    if ( strcmp(argv[i],"-nt")==0 ){
+  for (i = 0; i < argc; i++)
+  {
+    if (strcmp("-nt", argv[0]) == 0)
+    {
       po = 1;
       ip = i;
     }
   }
 
-  if ( (argc-1)<(ip+1) ){
+  if ((argc - 1) < (ip + 1))
+  {
     printf("cannot find the number of threads\n");
     exit(0);
   }
 
-  if ( po==1 ){
+  if (po == 1)
+  {
 
     openmp_threads_num = atoi(argv[ip+1]);
 
@@ -72,10 +76,10 @@ int main(int argc, char *argv[])
 
   omp_set_num_threads(openmp_threads_num);
 
-  printf("\nThe number of threads in each node for OpenMP parallelization is %d.\n\n",openmp_threads_num);
+  printf("\nThe number of threads in each node for OpenMP parallelization is %d.\n\n", openmp_threads_num);
 
   /****************************************************
-               Set of input parameters                
+               Set of input parameters
   ****************************************************/
 
   readfile(argv);
@@ -91,23 +95,29 @@ int main(int argc, char *argv[])
   ****************************************************/
 
   /* calculation of frozen core */
+  
   if (Calc_Type==3){
     All_Electron(0);
     All_Electron(1);
   }
 
   /* all electron LDA calculation by FEM: original version */
+  /*
   else if (Calc_Type==4){
     FEM_All_Electron();
-  }
+  }*/
+
   /* all electron HF calculation by FEM */
+  /*
   else if (Calc_Type==5){
     FEMHF_All_Electron();
-  }
+  }*/
+
   /* all electron LDA calculation by FEM */
-  else if (Calc_Type==6){
+  /*else if (Calc_Type==6){
     FEMLDA_All_Electron();
-  }
+  }*/
+
   else{
     i = Restart_load(0);
     if ( i==0 ) All_Electron(0);
@@ -118,32 +128,33 @@ int main(int argc, char *argv[])
                    Pseudo potentials
   ****************************************************/
 
-  if ( (Calc_Type==1 || Calc_Type==2) && AtomNum!=0){
+  /*
+    if ( (Calc_Type==1 || Calc_Type==2) && AtomNum!=0){
 
-    Init_VPS();
+      Init_VPS();
 
-    if      (VPP_switch==0)  BHS(0);
-    else if (VPP_switch==1)  TM(0);
-    else if (VPP_switch==2)  MR(0);
-    else if (VPP_switch==5)  MBK(0);
+      if      (VPP_switch==0)  BHS(0);
+      else if (VPP_switch==1)  TM(0);
+      else if (VPP_switch==2)  MR(0);
+      else if (VPP_switch==5)  MBK(0);
 
-    if ( VPP_switch==0 || VPP_switch==1 || VPP_switch==2 ) Generate_VNL();
+      if ( VPP_switch==0 || VPP_switch==1 || VPP_switch==2 ) Generate_VNL();
 
-    if (Calc_Type==1 && LogD_switch==1) Log_DeriF();
-    if (Calc_Type==1 && ghost_check==1) ghost(0);
-  }
-  else if (AtomNum==0){
-    Empty_VPS();
-  }
+      if (Calc_Type==1 && LogD_switch==1) Log_DeriF();
+      if (Calc_Type==1 && ghost_check==1) ghost(0);
+    }
+    else if (AtomNum==0){
+      Empty_VPS();
+    }*/
 
   /****************************************************
                    Pseudo atomic orbitals
   ****************************************************/
 
-  if (Calc_Type==2) Multiple_PAO(0);
-  
+  // if (Calc_Type==2) Multiple_PAO(0);
+
   /****************************************************
-                        Output 
+                        Output
   ****************************************************/
 
   Output(argv[1]);
@@ -153,8 +164,4 @@ int main(int argc, char *argv[])
   ****************************************************/
 
   printf("\nThe calculation was completed normally.\n");
-
 }
-
-
-

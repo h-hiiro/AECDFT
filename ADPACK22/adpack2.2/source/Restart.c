@@ -4,7 +4,7 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <unistd.h>
-#include "adpack.h"
+#include "adpack_ext.h"
 
 void Restart_save(int state_num)
 {

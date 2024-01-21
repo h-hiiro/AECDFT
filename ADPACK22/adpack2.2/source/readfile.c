@@ -14,8 +14,9 @@
 #include <string.h>
 #include <strings.h>
 #include <math.h>
-#include "adpack.h"
 #include "Inputtools.h"
+
+#include "adpack_ext.h"
 
 static void Input_std(char *file);
 

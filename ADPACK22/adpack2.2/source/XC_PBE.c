@@ -17,7 +17,7 @@
 
 #include <math.h>
 #include <stdlib.h>
-#include "adpack.h"
+#include "adpack_ext.h"
 
 #define FOUTHD  (4.0/3.0) 
 #define HALF    0.50
