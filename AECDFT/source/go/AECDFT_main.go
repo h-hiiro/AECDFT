@@ -15,65 +15,80 @@ const (
 )
 
 func main() {
-	fmt.Println("Hello, world!")
-	loc := time.FixedZone(Location, TimeDiff)
+	// Time zone set
+	var loc *time.Location
+	var err error
+	if loc, err = SetLocation(); err != nil {
+		log.Fatal(err)
+	}
+
+	// Check arguments
 	deleteAfterSuccess := LoadArgs_rm()
 
+	// List input files
 	inputFiles, err := FindInputFiles(InputDir)
 	if err != nil {
 		log.Fatal(err)
 	}
 
 	var calcSummaries []CalcSummary
-
 	for i, inputFile := range inputFiles {
 		fmt.Printf("%s is found\n", inputFile)
 		calcSummaries = append(calcSummaries, CalcSummary{InputFile: inputFile})
 
-		calcData, err := NewCalcData()
-		if err != nil {
+		// Generate the data variable
+		var calcData *CalcData
+		if calcData, err = NewCalcData(); err != nil {
 			calcSummaries[i].Error = err
 			continue
 		}
 		calcData.Exec.Started = time.Now().In(loc)
-		err = calcData.AppendInput(filepath.Join(InputDir, inputFile))
-		if err != nil {
+
+		// Load the input file and validate it
+		if err = calcData.AppendInput(filepath.Join(InputDir, inputFile)); err != nil {
+			calcSummaries[i].Error = err
+			continue
+		}
+		if err = calcData.Input.Validate(); err != nil {
 			calcSummaries[i].Error = err
 			continue
 		}
 
-		fmt.Printf("Title: \"%s\"\n", calcData.Input.Title)
-		err = calcData.Input.Validate()
-		if err != nil {
-			calcSummaries[i].Error = err
-			continue
-		}
+		// Prepare the variables
+		Grid := GenGrid(calcData.Input.Grid)
 
+		fmt.Printf("Grid size: %v\n", Grid.Size)
+
+		// Calculate the computation time
 		calcData.Exec.Finished = time.Now().In(loc)
 		calcData.Exec.Duration_sec = calcData.Exec.Finished.Sub(calcData.Exec.Started).Seconds()
 		calcSummaries[i].Duration_sec = calcData.Exec.Duration_sec
 
+		// Export the result
 		outputFile := fmt.Sprintf("%s_%s.json", calcData.Exec.Started.Format(SimpleTimeFormat), calcData.Input.Title)
 		calcSummaries[i].OutputFile = outputFile
-
-		err = calcData.Export(filepath.Join(OutputDir, outputFile))
-		if err != nil {
+		if err = calcData.Export(filepath.Join(OutputDir, outputFile)); err != nil {
 			calcSummaries[i].Error = err
 			continue
 		}
 
+		// Set nil to Error (success)
 		calcSummaries[i].Error = nil
+
+		// Remove the input files
 		if deleteAfterSuccess {
-			err = os.Remove(filepath.Join(InputDir, inputFile))
-			if err != nil {
+			if err = os.Remove(filepath.Join(InputDir, inputFile)); err != nil {
 				fmt.Printf("Error during removal: %v\n", err)
 			} else {
 				fmt.Printf("%s was removed\n", inputFile)
 			}
-
 		}
+
+		// Free allocated vectors
+		Grid.Free()
 	}
 
+	// Display the calculation summary
 	fmt.Println("----------------")
 	fmt.Println("Calculation Summary:")
 	for _, calcSummary := range calcSummaries {

@@ -1,0 +1,8 @@
+{
+    "Title": "aecdft",
+    "Grid": {
+        "XMin": -7.0, // RMin = exp(XMin)
+        "XMax": 2.5, // RMax = exp(XMax)
+        "Num": 4000
+    }
+}

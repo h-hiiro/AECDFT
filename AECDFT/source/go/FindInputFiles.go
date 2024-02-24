@@ -17,7 +17,7 @@ func FindInputFiles(dir string) ([]string, error) {
 		}
 		inputFileName := inputFile.Name()
 		inputFileExt := filepath.Ext(inputFileName)
-		if inputFileExt == ".json" {
+		if inputFileExt == ".json" || inputFileExt == ".jsonc" {
 			JsonFiles = append(JsonFiles, inputFileName)
 		}
 	}

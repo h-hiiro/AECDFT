@@ -1,14 +1,17 @@
 package main
 
+import "C"
 import (
 	"encoding/json"
 	"fmt"
 	"os"
 	"time"
+
+	"github.com/tidwall/jsonc"
 )
 
 const (
-	InputData_default string = "./input_default.json"
+	InputData_default string = "./input_default.jsonc"
 	Indent            string = "  "
 )
 
@@ -20,9 +23,23 @@ type CalcData struct {
 
 type InputData struct {
 	Title string
+	Grid  Grid_conf
+}
+
+type Grid_conf struct {
+	XMin float64
+	XMax float64
+	Num  int
 }
 
 type OutputData struct {
+}
+
+type Grid_value struct {
+	X    *C.double
+	R    *C.double
+	Size int
+	DX   float64
 }
 
 type ExecData struct {
@@ -37,6 +54,10 @@ func (input *InputData) Validate() error {
 		return fmt.Errorf("title length should be in [1, 128]")
 	}
 
+	// Grid: XMin<XMax
+	if !(input.Grid.XMin < input.Grid.XMax) {
+		return fmt.Errorf("invalid grid range")
+	}
 	return nil
 }
 
@@ -54,7 +75,7 @@ func (calcData *CalcData) AppendInput(filepath string) error {
 	if err != nil {
 		return err
 	}
-	err = json.Unmarshal(inputFileData, &(calcData.Input))
+	err = json.Unmarshal(jsonc.ToJSON(inputFileData), &(calcData.Input))
 	if err != nil {
 		return err
 	}
