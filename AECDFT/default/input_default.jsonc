@@ -4,5 +4,13 @@
         "XMin": -7.0, // RMin = exp(XMin)
         "XMax": 2.5, // RMax = exp(XMax)
         "Num": 4000
+    },
+    "Atom":{
+        "Z": 0 // >=1, Required
+    },
+    "TF":{
+        "InitialDiff_left": -1.6,
+        "InitialDIff_right": -1.45,
+        "Threshold": 1e-5
     }
 }

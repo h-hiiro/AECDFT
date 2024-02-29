@@ -1,5 +1,10 @@
 package main
 
+/*
+#cgo LDFLAGS: -L../cpp -laecdft -lstdc++ -lm -static
+#include "../cpp/LibAECDFT.hpp"
+*/
+import "C"
 import (
 	"fmt"
 	"log"
@@ -56,6 +61,15 @@ func main() {
 
 		// Prepare the variables
 		Grid := GenGrid(calcData.Input.Grid)
+		V := (*Potential)(C.alloc_dvector(C.int(Grid.Size)))
+		rho := (*DensityDistribution)(C.alloc_dvector(C.int(Grid.Size)))
+
+		// Obtain the initial density distriubtion (Thomas-Fermi type)
+		err = CalcTFPotential(Grid, calcData.Input.Atom.Z, V, rho, calcData.Input.TF)
+		if err != nil {
+			calcSummaries[i].Error = err
+			continue
+		}
 
 		fmt.Printf("Grid size: %v\n", Grid.Size)
 
@@ -86,6 +100,9 @@ func main() {
 
 		// Free allocated vectors
 		Grid.Free()
+		C.free_dvector((*C.double)(V))
+		C.free_dvector((*C.double)(rho))
+
 	}
 
 	// Display the calculation summary

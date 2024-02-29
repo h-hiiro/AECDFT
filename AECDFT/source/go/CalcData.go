@@ -24,6 +24,8 @@ type CalcData struct {
 type InputData struct {
 	Title string
 	Grid  Grid_conf
+	Atom  Atom_conf
+	TF    TF_conf
 }
 
 type Grid_conf struct {
@@ -32,15 +34,29 @@ type Grid_conf struct {
 	Num  int
 }
 
+type Atom_conf struct {
+	Z int
+}
+
+type TF_conf struct {
+	InitialDiff_left  float64
+	InitialDiff_right float64
+	Threshold         float64
+}
+
 type OutputData struct {
 }
 
 type Grid_value struct {
-	X    *C.double
-	R    *C.double
+	X    *Axis
+	R    *Axis
 	Size int
 	DX   float64
 }
+
+type Axis C.double
+type Potential C.double
+type DensityDistribution C.double
 
 type ExecData struct {
 	Started      time.Time
@@ -58,6 +74,12 @@ func (input *InputData) Validate() error {
 	if !(input.Grid.XMin < input.Grid.XMax) {
 		return fmt.Errorf("invalid grid range")
 	}
+
+	// Atom: 1 <= Z <= 118
+	if !(1 <= input.Atom.Z && input.Atom.Z <= 118) {
+		return fmt.Errorf("invalid atomic number")
+	}
+
 	return nil
 }
 
