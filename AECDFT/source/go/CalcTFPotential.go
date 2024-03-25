@@ -9,6 +9,7 @@ import (
 	"math"
 )
 
+// # Thomas-Fermi potential
 func CalcTFPotential(Grid *Grid_value, Z int, V *Potential, rho *DensityDistribution, TF TF_conf) error {
 	mu := math.Pow(3.0*math.Pi/4.0, 2.0/3.0) / (2.0 * math.Pow((float64)(Z), 1.0/3.0))
 	// fmt.Printf("[CalcTFPotential] mu = %f\n", mu)
@@ -17,6 +18,7 @@ func CalcTFPotential(Grid *Grid_value, Z int, V *Potential, rho *DensityDistribu
 		(*C.double)(Grid.R),
 		C.double(1.0/mu)))
 
+	// # Calculation of the TF potential
 	VTF := (*Potential)(C.alloc_dvector(C.int(Grid.Size)))
 	TF_result := bool(C.calc_TFPotential(
 		C.int(Grid.Size),

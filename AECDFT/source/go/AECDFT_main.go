@@ -19,6 +19,7 @@ const (
 	SimpleTimeFormat string = "2006-01-02_15-04-05"
 )
 
+// # Main routine
 func main() {
 	// Time zone set
 	var loc *time.Location
@@ -36,6 +37,7 @@ func main() {
 		log.Fatal(err)
 	}
 
+	// # Calculation part
 	var calcSummaries []CalcSummary
 	for i, inputFile := range inputFiles {
 		fmt.Printf("%s is found\n", inputFile)
