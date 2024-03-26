@@ -12,5 +12,13 @@
         "InitialDiff_left": -1.6,
         "InitialDIff_right": -1.45,
         "Threshold": 1e-5
+    },
+    "SCF":{
+        "MaxIteration": 100, // >=1
+        "Threshold": 1e-10
+    },
+    "DFT":{
+        "XCType": "", // Xa-Slater, LDA-CA, LDA-VWN, or GGA-PBE, Required
+        "Xa_alpha": 0.70 // Valid only when XCType == Xa-Slater
     }
 }

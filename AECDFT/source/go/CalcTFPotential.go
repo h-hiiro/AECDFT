@@ -10,8 +10,8 @@ import (
 )
 
 // # Thomas-Fermi potential
-func CalcTFPotential(Grid *Grid_value, Z int, V *Potential, rho *DensityDistribution, TF TF_conf) error {
-	mu := math.Pow(3.0*math.Pi/4.0, 2.0/3.0) / (2.0 * math.Pow((float64)(Z), 1.0/3.0))
+func CalcTFPotential(Grid *Grid_value, Z float64, V *Potential, rho *DensityDistribution, TF TF_conf) error {
+	mu := math.Pow(3.0*math.Pi/4.0, 2.0/3.0) / (2.0 * math.Pow(Z, 1.0/3.0))
 	// fmt.Printf("[CalcTFPotential] mu = %f\n", mu)
 	X := (*Axis)(C.scale_grid(
 		C.int(Grid.Size),
@@ -35,7 +35,7 @@ func CalcTFPotential(Grid *Grid_value, Z int, V *Potential, rho *DensityDistribu
 		C.int(Grid.Size),
 		(*C.double)(Grid.R),
 		(*C.double)(VTF),
-		C.int(Z),
+		C.double(Z),
 		(*C.double)(V),
 		(*C.double)(rho))
 

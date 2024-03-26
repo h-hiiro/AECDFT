@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"os"
+	"slices"
 	"time"
 
 	"github.com/tidwall/jsonc"
@@ -26,6 +27,8 @@ type InputData struct {
 	Grid  Grid_conf
 	Atom  Atom_conf
 	TF    TF_conf
+	SCF   SCF_conf
+	DFT   DFT_conf
 }
 
 type Grid_conf struct {
@@ -35,7 +38,7 @@ type Grid_conf struct {
 }
 
 type Atom_conf struct {
-	Z int
+	Z float64
 }
 
 type TF_conf struct {
@@ -44,7 +47,18 @@ type TF_conf struct {
 	Threshold         float64
 }
 
+type SCF_conf struct {
+	MaxIteration int
+	Threshold    DeltaRhoNorm
+}
+
+type DFT_conf struct {
+	XCType   string
+	Xa_alpha float64
+}
+
 type OutputData struct {
+	SCF SCF_result
 }
 
 type Grid_value struct {
@@ -57,6 +71,12 @@ type Grid_value struct {
 type Axis C.double
 type Potential C.double
 type DensityDistribution C.double
+
+type DeltaRhoNorm float64
+
+type SCF_result struct {
+	Achieved bool
+}
 
 type ExecData struct {
 	Started      time.Time
@@ -78,6 +98,17 @@ func (input *InputData) Validate() error {
 	// Atom: 1 <= Z <= 118
 	if !(1 <= input.Atom.Z && input.Atom.Z <= 118) {
 		return fmt.Errorf("invalid atomic number")
+	}
+
+	// SCF: 1 <= MaxIteration
+	if !(1 <= input.SCF.MaxIteration) {
+		return fmt.Errorf("invalid maximum iteration")
+	}
+
+	// DFT: XCType
+	XCTypes := []string{"Xa-Slater", "LDA-CA", "LDA-VWN", "GGA-PBE"}
+	if !slices.Contains(XCTypes, input.DFT.XCType) {
+		return fmt.Errorf("invalid xc type")
 	}
 
 	return nil

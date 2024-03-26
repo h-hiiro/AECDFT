@@ -43,7 +43,7 @@ func main() {
 		fmt.Printf("%s is found\n", inputFile)
 		calcSummaries = append(calcSummaries, CalcSummary{InputFile: inputFile})
 
-		// Generate the data variable
+		// Generate the data variables
 		var calcData *CalcData
 		if calcData, err = NewCalcData(); err != nil {
 			calcSummaries[i].Error = err
@@ -63,17 +63,55 @@ func main() {
 
 		// Prepare the variables
 		Grid := GenGrid(calcData.Input.Grid)
-		V := (*Potential)(C.alloc_dvector(C.int(Grid.Size)))
+		V_total := (*Potential)(C.alloc_dvector(C.int(Grid.Size)))
+		V_core := (*Potential)(C.alloc_dvector(C.int(Grid.Size)))
+		V_hartree := (*Potential)(C.alloc_dvector(C.int(Grid.Size)))
+		V_xc := (*Potential)(C.alloc_dvector(C.int(Grid.Size)))
 		rho := (*DensityDistribution)(C.alloc_dvector(C.int(Grid.Size)))
 
+		/// the name NormRD is the convention in ADPACK and OpenMX
+		NormRD_history := C.alloc_dvector(C.int(calcData.Input.SCF.MaxIteration))
+		var NormRD DeltaRhoNorm
+		var IterationNumber int = 0
+		var SCF_OK bool = false
+
 		// Obtain the initial density distriubtion (Thomas-Fermi type)
-		err = CalcTFPotential(Grid, calcData.Input.Atom.Z, V, rho, calcData.Input.TF)
+		// rho is used while V is not used
+		err = CalcTFPotential(Grid, calcData.Input.Atom.Z, V_total, rho, calcData.Input.TF)
 		if err != nil {
 			calcSummaries[i].Error = err
 			continue
 		}
 
-		fmt.Printf("Grid size: %v\n", Grid.Size)
+		// SCF loop
+		for !SCF_OK && IterationNumber < calcData.Input.SCF.MaxIteration {
+			IterationNumber++
+
+			// Prepare potential
+			CalcCore(Grid, calcData.Input.Atom.Z, V_core)
+			CalcHartree(Grid, rho, V_hartree)
+			err = CalcXC(Grid, rho, calcData.Input.DFT, V_xc)
+			if err != nil {
+				calcSummaries[i].Error = err
+				break
+			}
+			CalcSum(Grid, V_core, V_hartree, V_xc, V_total)
+			C.print_dvector2(C.int(Grid.Size), (*C.double)(Grid.R), (*C.double)(V_total), C.CString("%.6f"))
+
+			// SCF check
+			if NormRD < calcData.Input.SCF.Threshold {
+				SCF_OK = true
+			}
+			C.set_value(NormRD_history, C.int(IterationNumber-1), C.double(NormRD))
+			fmt.Printf("SCF Loop #%4d: NormRD (norm of density difference) is %15.12f\n", IterationNumber, NormRD)
+		}
+
+		calcData.Output.SCF.Achieved = SCF_OK
+		if SCF_OK {
+			fmt.Printf("SCF is achieved with loop #%d\n", IterationNumber)
+		} else {
+			fmt.Printf("SCF is NOT acheived with loop #%d\n", IterationNumber)
+		}
 
 		// Calculate the computation time
 		calcData.Exec.Finished = time.Now().In(loc)
@@ -102,7 +140,10 @@ func main() {
 
 		// Free allocated vectors
 		Grid.Free()
-		C.free_dvector((*C.double)(V))
+		C.free_dvector((*C.double)(V_total))
+		C.free_dvector((*C.double)(V_core))
+		C.free_dvector((*C.double)(V_hartree))
+		C.free_dvector((*C.double)(V_xc))
 		C.free_dvector((*C.double)(rho))
 
 	}
