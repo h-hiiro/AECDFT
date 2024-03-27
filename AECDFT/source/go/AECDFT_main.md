@@ -15,7 +15,7 @@
 - The variable ```calcData``` contains all the calculation conditions and results. See [CalcData.go](./CalcData.go) for the structure definition.
 - The variable ```Grid``` (type ```*Grid_value```) contains the radial grid configuration. See ```GenGrid``` in [Initialize.go](./Initialize.go) for the details.
   - The program use the logarithmically separated grid. ```Grid.X``` is the log value (equally separated) and ```Grid.R``` is the normal value (logrithmically separated).
-- The variable ```V``` (type ```*Potential```) contains the potential $V(r)$.
+- The variables ```V_core```, ```V_hartree```, ```V_xc```, and ```V_total``` (type ```*Potential```) contain the potentials.
 - The variable ```rho``` (type ```*DensityDistribution```) contains the density distribution $\rho(r)$.
 
 ## Procedure
@@ -23,5 +23,8 @@
 - Load the input file and validate it. See ```NewCalcData```, ```AppendInput```, and ```Validate``` in [CalcData.go](./CalcData.go) for the details.
   - Some options have the default values, as specified in [input_default.jsonc](../../default/input_default.jsonc).
 - Prepare the variables.
-- Fill ```V``` and ```rho``` by the initial guess.
-  - The **Thomas-Fermi distribution** is used. See [CalcTFPotential.go](./CalcTFPotential.go) and [Calc_TF.cpp](../cpp/Calc_TF.cpp) for the details.
+- Fill ```rho``` (and ```V_total```) by the initial guess.
+  - The **Thomas-Fermi (TF) distribution** is used. See [CalcTFPotential.go](./CalcTFPotential.go) and [Calc_TF.cpp](../cpp/Calc_TF.cpp) for the details.
+  - The TF potential is not used while the TF density is used.
+- Perform iteration until the system satisfies the self consistency condition.
+  - Prepare the potential from the resultant density distribution of the last iteration. See [CalcDFTPotential.go](./CalcDFTPotential.go) for the details.

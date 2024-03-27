@@ -1,6 +1,6 @@
 # Thomas-Fermi potential
 
-The Thomas-Fermi (TF) potential is the screened potential derived using the TF approximation [[N. H. March, Advances in Physics **6**, 1 (1957)]](https://doi.org/10.1080/00018735700101156).
+The Thomas-Fermi (TF) potential is the screened potential derived using the TF approximation [[N. H. March, Advances in Physics **6**, 1 (1957)](https://doi.org/10.1080/00018735700101156)].
 
 We consider the case where the atomic nucleus with charge $Z$ is put at the origin and $Z$ electrons are around the nucleus.
 $V(r)$ and $\rho(r)$ represent the potential and electron density, respectively.
