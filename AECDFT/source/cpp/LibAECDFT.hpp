@@ -21,6 +21,7 @@ extern "C"
     void calc_hartree(int N, double* R, double DX, double* rho, double* V);
     void calc_xc_Xa(int N, double alpha, double* rho, double* V);
     void calc_xc_LDA_CA(int N, double* rho, double* V);
+    void calc_xc_LDA_VWN(int N, double* rho, double* V);
     void calc_sum(int N, double* V_core, double* V_hartree, double* V_xc, double* V_total);
 #ifdef __cplusplus
 }
