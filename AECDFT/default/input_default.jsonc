@@ -6,7 +6,12 @@
         "Num": 4000
     },
     "Atom":{
-        "Z": 0 // >=1, Required
+        "Z": 0, // >=1, Required
+        "LMax": 0, // >= 0, To be modified in most cases
+        "NMax": 0, // >= 1, Required 
+        "Occupancies": [[]], // Required
+        "NumElectrons": 0, // To be filled by the program
+        "NumOrbitals": 0 // To be filled by the program
     },
     "TF":{
         "InitialDiff_left": -1.6,

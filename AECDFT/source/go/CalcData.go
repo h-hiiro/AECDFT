@@ -5,7 +5,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"os"
-	"slices"
 	"time"
 
 	"github.com/tidwall/jsonc"
@@ -38,7 +37,12 @@ type Grid_conf struct {
 }
 
 type Atom_conf struct {
-	Z float64
+	Z            float64
+	LMax         int
+	NMax         int
+	Occupancies  [][]float64
+	NumElectrons float64
+	NumOrbitals  int
 }
 
 type TF_conf struct {
@@ -58,7 +62,22 @@ type DFT_conf struct {
 }
 
 type OutputData struct {
-	SCF SCF_result
+	SCF         SCF_result
+	Eigenstates []Eigenstate
+}
+type Eigenstate struct {
+	N         int
+	L         int
+	Occupancy float64
+	E         float64
+}
+
+func (e Eigenstate) String_nlo() string {
+	return fmt.Sprintf("N=%d, L=%d, Occupancy=%5.1f", e.N, e.L, e.Occupancy)
+}
+func (e Eigenstate) String() string {
+	return fmt.Sprintf("N=%d, L=%d, Occupancy=%5.1f, Eigenvalue=%18.10f",
+		e.N, e.L, e.Occupancy, e.E)
 }
 
 type Grid_value struct {
@@ -71,6 +90,7 @@ type Grid_value struct {
 type Axis C.double
 type Potential C.double
 type DensityDistribution C.double
+type Wavefunction C.double
 
 type DeltaRhoNorm float64
 
@@ -82,36 +102,6 @@ type ExecData struct {
 	Started      time.Time
 	Finished     time.Time
 	Duration_sec float64
-}
-
-func (input *InputData) Validate() error {
-	// Title: 1 <= length <= 128
-	if !(1 <= len(input.Title) && len(input.Title) <= 128) {
-		return fmt.Errorf("title length should be in [1, 128]")
-	}
-
-	// Grid: XMin<XMax
-	if !(input.Grid.XMin < input.Grid.XMax) {
-		return fmt.Errorf("invalid grid range")
-	}
-
-	// Atom: 1 <= Z <= 118
-	if !(1 <= input.Atom.Z && input.Atom.Z <= 118) {
-		return fmt.Errorf("invalid atomic number")
-	}
-
-	// SCF: 1 <= MaxIteration
-	if !(1 <= input.SCF.MaxIteration) {
-		return fmt.Errorf("invalid maximum iteration")
-	}
-
-	// DFT: XCType
-	XCTypes := []string{"Xa-Slater", "LDA-CA", "LDA-VWN", "GGA-PBE"}
-	if !slices.Contains(XCTypes, input.DFT.XCType) {
-		return fmt.Errorf("invalid xc type")
-	}
-
-	return nil
 }
 
 func NewCalcData() (*CalcData, error) {

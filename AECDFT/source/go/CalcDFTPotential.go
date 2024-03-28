@@ -44,6 +44,10 @@ func CalcXC(Grid *Grid_value, rho *DensityDistribution, conf DFT_conf, V *Potent
 			(*C.double)(V))
 	case "LDA-VWN":
 		// ### LDA by Vosko, Wilk, and Nusair
+		C.calc_xc_LDA_VWN(
+			C.int(Grid.Size),
+			(*C.double)(rho),
+			(*C.double)(V))
 	case "GGA-PBE":
 		// ### GGA by Perdew, Burke, and Ernzerhof
 	default:

@@ -62,12 +62,13 @@ func main() {
 		}
 
 		// Prepare the variables
-		Grid := GenGrid(calcData.Input.Grid)
+		Grid := calcData.Input.Grid.GenGrid()
 		V_total := (*Potential)(C.alloc_dvector(C.int(Grid.Size)))
 		V_core := (*Potential)(C.alloc_dvector(C.int(Grid.Size)))
 		V_hartree := (*Potential)(C.alloc_dvector(C.int(Grid.Size)))
 		V_xc := (*Potential)(C.alloc_dvector(C.int(Grid.Size)))
 		rho := (*DensityDistribution)(C.alloc_dvector(C.int(Grid.Size)))
+		// Wavefunctions := calcData.PrepareOrbitals()
 
 		/// the name NormRD is the convention in ADPACK and OpenMX
 		NormRD_history := C.alloc_dvector(C.int(calcData.Input.SCF.MaxIteration))
@@ -82,6 +83,7 @@ func main() {
 			calcSummaries[i].Error = err
 			continue
 		}
+		// C.print_dvector2(C.int(Grid.Size), (*C.double)(Grid.R), (*C.double)(V_total), C.CString("%.6f"))
 
 		// SCF loop
 		for !SCF_OK && IterationNumber < calcData.Input.SCF.MaxIteration {
@@ -96,7 +98,7 @@ func main() {
 				break
 			}
 			CalcSum(Grid, V_core, V_hartree, V_xc, V_total)
-			C.print_dvector2(C.int(Grid.Size), (*C.double)(Grid.R), (*C.double)(V_total), C.CString("%.6f"))
+			// C.print_dvector2(C.int(Grid.Size), (*C.double)(Grid.R), (*C.double)(V_total), C.CString("%.6f"))
 
 			// SCF check
 			if NormRD < calcData.Input.SCF.Threshold {

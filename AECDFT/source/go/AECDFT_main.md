@@ -5,7 +5,7 @@
   - The time zone can be specified by the ```AECDFT_TZ``` environment variable.
 - Check the arguments. See [LoadArgs.go](./LoadArgs.go) for the details.
   - if ```--rm``` exists, the routine removes the input files with which the calculations successfully finished.
-- Get a list  of input files with extensions ```.json``` (JSON) or ```.jsonc``` (JSON with comments).
+- Get a list of input files with extensions ```.json``` (JSON) or ```.jsonc``` (JSON with comments).
 - For each input file, perform calculations.
 
 # Calculation part
