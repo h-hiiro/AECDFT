@@ -5,7 +5,7 @@ If the relativistic effect is negligible, the differential equation to be solved
 Since the potential is isotropic, we can find eigenstates for both the Hamiltonian and the angular momentum $\mathbf{L}$.
 
 The radial differential equation is 
-$$\left[-\frac{1}{2}\frac{\partial^2}{\partial r}+\frac{l(l+1)}{2r^2}+v(r)\right]P(r)=\varepsilon P(r)$$
+$$\left[-\frac{1}{2}\frac{\partial^2}{\partial r^2}+\frac{l(l+1)}{2r^2}+v(r)\right]P(r)=\varepsilon P(r)$$
 $$\psi(r)=\frac{P(r)}{r}Y_{lm}(\theta, \varphi).$$
 
 ## Dirac equation
@@ -40,7 +40,7 @@ $$ (E+c^2-V)F(r) - c\frac{\partial G}{\partial r} + \frac{ck}{r}G(r) = 0$$
 These equations can be transfomed the the ones used in the ADPACK [(Link)](https://t-ozaki.issp.u-tokyo.ac.jp/mpcoms2021_lectures/Atomic_DFT-implementation.pdf) by 
 - defining $\alpha=1/c$ (fine structure constant)
 - replacing $E-c^2$ by $\varepsilon$ (energy without the mass term)
-- replacing $k$ by $-\kappa = -(l+1),\ l$, and
+- replacing $k$ by $-\kappa\ (\kappa = -(l+1),\ l)$, and
 - exchanging $F(r)$ and $G(r)$.
 The final form is
 $$\left(\frac{\partial}{\partial r}-\frac{\kappa}{r}\right) F(r) + \alpha(\varepsilon-V(r))G(r) = 0 $$
@@ -48,5 +48,33 @@ $$\left(\frac{\partial}{\partial r}+\frac{\kappa}{r}\right) G(r) -\alpha\left(\v
 Using the latter equation, we get
 $$ F(r)=\frac{\alpha}{2(1+(\varepsilon-V(r))/\alpha^2)}\left(\frac{\partial}{\partial r}+\frac{\kappa}{r}\right)G(r).$$
 Inserting it into the former equation, finally we get
-$$\left[\frac{1}{2m}\left(\frac{\partial^2}{\partial r^2}+\frac{\alpha}{2m}\frac{\partial V}{\partial r}\left(\frac{\partial}{\partial r}+\frac{\kappa}{r}\right)-\frac{\kappa(\kappa+1)}{r^2}\right)+(\varepsilon-V(r))\right]G(r) = 0$$
+$$\left[\frac{1}{2m}\left(\frac{\partial^2}{\partial r^2}+\frac{\alpha^2}{2m}\frac{\partial V}{\partial r}\left(\frac{\partial}{\partial r}+\frac{\kappa}{r}\right)-\frac{\kappa(\kappa+1)}{r^2}\right)+(\varepsilon-V(r))\right]G(r) = 0$$
 $$m=1+\frac{\alpha^2(\varepsilon-V(r))}{2}.$$
+
+# Transforming the ODEs for calculations
+
+We apply the following transformation for the simpler representation:
+$$P(r)=r^{l+1} L(x)$$
+$$M(x)=\frac{\partial}{\partial x} L(x)$$
+$$x=\log r.$$
+
+Using them, we derive
+$$\frac{\partial}{\partial r}P(r)=(l+1)r^l L(x)+r^{l+1} \frac{\partial}{\partial r}L(x)$$
+$$\frac{\partial^2}{\partial r^2}P(r)=l(l+1)r^{l-1} L(x)+2(l+1)r^l \frac{\partial}{\partial r}L(x)+r^{l+1}\frac{\partial^2}{\partial r^2} L(x)$$
+$$\frac{\partial}{\partial r} L(x)=\frac{1}{r}\frac{\partial}{\partial x}L(x)=e^{-x}\frac{\partial}{\partial x}L(x)$$
+$$\Longrightarrow \frac{\partial}{\partial r}P(r)=r^l \left[(l+1)L(x)+\frac{\partial}{\partial x}L(x)\right]$$
+$$\frac{\partial^2}{\partial r^2} L(x)=e^{-2x}\left[-\frac{\partial}{\partial x}L(x)+\frac{\partial^2}{\partial x^2}L(x)\right]$$
+$$\Longrightarrow \frac{\partial^2}{\partial r^2}P(r)=r^{l-1}\left[l(l+1)L(x)+(2l+1)\frac{\partial}{\partial x}L(x)+\frac{\partial^2}{\partial x^2}L(x)\right].$$
+
+Therefore, the Schroedinger equation becomes
+$$\left[\frac{\partial^2}{\partial x^2}+(2l+1)\frac{\partial}{\partial x}-2r^2(v(r)-\varepsilon)\right]L(x)=0$$
+$$\Longrightarrow \frac{\partial}{\partial x} L(x)=M(x),\ \ 
+\frac{\partial}{\partial x} M(x)=-(2l+1)M(x)+2r^2(v(r)-\varepsilon)L(x).$$
+
+In case of the Dirac equation, the similar transformation is applied to $G(r)$.
+$$\left[\frac{\partial^2}{\partial x^2}+(2l+1)\frac{\partial}{\partial x} +l(l+1)-\kappa(\kappa+1)+\frac{r\alpha^2}{2m}\frac{\partial V}{\partial r}\left(l+1+\kappa+\frac{\partial}{\partial x}\right)-2mr^2(v(r)-\varepsilon)\right]L(x)=0$$
+$$\Longrightarrow \frac{\partial}{\partial x} L(x)=M(x),\ \ 
+\frac{\partial}{\partial x} M(x)=-\left(2l+1+\frac{r\alpha^2}{2m}\frac{\partial V}{\partial r}\right)M(x)+\frac{r\alpha^2}{2m}\frac{\partial V}{\partial r}(l+1+\kappa)L(x)+2mr^2(v(r)-\varepsilon)L(x).$$
+
+In the case of the scalar relativistic Dirac equation, the $\kappa$ dependence is averaged.
+Since $\langle\kappa\rangle=[-(l+1)(2l+2)+l\cdot 2l]/(4l+2)=-1$, the $l+1+\kappa$ part in the second term in the RHS is changed to $l$.

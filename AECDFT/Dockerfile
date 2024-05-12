@@ -1,7 +1,6 @@
 # go & cpp builder
 FROM golang:latest AS builder
-RUN apt-get -y update
-RUN apt-get -y install gfortran emacs
+RUN apt-get -y update && apt-get -y install gfortran emacs
 WORKDIR /source/lapack
 RUN wget https://github.com/Reference-LAPACK/lapack/archive/refs/tags/v3.12.0.tar.gz && tar xzf v3.12.0.tar.gz
 WORKDIR /source/lapack/lapack-3.12.0/
@@ -12,9 +11,7 @@ COPY ./source/cpp /source/cpp
 WORKDIR /source/cpp
 RUN make
 WORKDIR /source/go
-RUN go mod init AECDFT
-RUN go get -u github.com/tidwall/jsonc
-RUN go build -tags timetzdata 
+RUN go mod init AECDFT && go get -u github.com/tidwall/jsonc && go build -tags timetzdata 
 
 FROM busybox:latest
 WORKDIR /work
