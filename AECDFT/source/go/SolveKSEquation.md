@@ -52,6 +52,7 @@ $$\left[\frac{1}{2m}\left(\frac{\partial^2}{\partial r^2}+\frac{\alpha^2}{2m}\fr
 $$m=1+\frac{\alpha^2(\varepsilon-V(r))}{2}.$$
 
 # Transforming the ODEs for calculations
+## Transformed Schroedinger equation
 
 We apply the following transformation for the simpler representation:
 $$P(r)=r^{l+1} L(x)$$
@@ -71,10 +72,12 @@ $$\left[\frac{\partial^2}{\partial x^2}+(2l+1)\frac{\partial}{\partial x}-2r^2(v
 $$\Longrightarrow \frac{\partial}{\partial x} L(x)=M(x),\ \ 
 \frac{\partial}{\partial x} M(x)=-(2l+1)M(x)+2r^2(v(r)-\varepsilon)L(x).$$
 
+## Transformed Dirac equation
 In case of the Dirac equation, the similar transformation is applied to $G(r)$.
 $$\left[\frac{\partial^2}{\partial x^2}+(2l+1)\frac{\partial}{\partial x} +l(l+1)-\kappa(\kappa+1)+\frac{r\alpha^2}{2m}\frac{\partial V}{\partial r}\left(l+1+\kappa+\frac{\partial}{\partial x}\right)-2mr^2(v(r)-\varepsilon)\right]L(x)=0$$
 $$\Longrightarrow \frac{\partial}{\partial x} L(x)=M(x),\ \ 
 \frac{\partial}{\partial x} M(x)=-\left(2l+1+\frac{r\alpha^2}{2m}\frac{\partial V}{\partial r}\right)M(x)+\frac{r\alpha^2}{2m}\frac{\partial V}{\partial r}(l+1+\kappa)L(x)+2mr^2(v(r)-\varepsilon)L(x).$$
 
+## Transformed Scalar Dirac equation
 In the case of the scalar relativistic Dirac equation, the $\kappa$ dependence is averaged.
 Since $\langle\kappa\rangle=[-(l+1)(2l+2)+l\cdot 2l]/(4l+2)=-1$, the $l+1+\kappa$ part in the second term in the RHS is changed to $l$.

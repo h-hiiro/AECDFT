@@ -1,6 +1,7 @@
 #include "LibAECDFT.hpp"
 #include <cstdio>
 
+// One-dimensional vector
 double *alloc_dvector(int N) {
   double *alloc = new double[N];
   return alloc;

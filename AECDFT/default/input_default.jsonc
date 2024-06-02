@@ -5,25 +5,28 @@
         "XMax": 2.5, // RMax = exp(XMax)
         "Num": 4000
     },
-    "Atom":{
+    "Atom": {
         "Z": 0, // >=1, Required
         "LMax": 0, // >= 0, To be modified in most cases
         "NMax": 0, // >= 1, Required 
-        "Occupancies": [[]], // Required
+        "Occupancies": [
+            []
+        ], // Required
         "NumElectrons": 0, // To be filled by the program
         "NumOrbitals": 0 // To be filled by the program
     },
-    "TF":{
+    "TF": {
         "InitialDiff_left": -1.6,
         "InitialDIff_right": -1.45,
         "Threshold": 1e-5
     },
-    "SCF":{
+    "SCF": {
         "MaxIteration": 100, // >=1
         "Threshold": 1e-10
     },
-    "DFT":{
+    "DFT": {
         "XCType": "", // Xa-Slater, LDA-CA, LDA-VWN, or GGA-PBE, Required
-        "Xa_alpha": 0.70 // Valid only when XCType == Xa-Slater
+        "Xa_alpha": 0.70, // Valid only when XCType == Xa-Slater
+        "EqType": "Sch" // Sch, SDirac, Dirac
     }
 }

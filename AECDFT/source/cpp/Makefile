@@ -1,4 +1,4 @@
-target = Alloc.o Handle_grid.o Calc_TF.o Calc_potential.o
+target = Alloc.o Handle_grid.o Calc_TF.o Calc_potential.o Calc_differential.o
 compileOption = 
 
 build: $(target)

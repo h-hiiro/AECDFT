@@ -59,6 +59,7 @@ type SCF_conf struct {
 type DFT_conf struct {
 	XCType   string
 	Xa_alpha float64
+	EqType   string
 }
 
 type OutputData struct {
@@ -90,6 +91,7 @@ type Grid_value struct {
 type Axis C.double
 type Potential C.double
 type DensityDistribution C.double
+type DifferentialCoefficients C.double
 type Wavefunction C.double
 
 type DeltaRhoNorm float64

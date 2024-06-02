@@ -68,6 +68,7 @@ func main() {
 		V_hartree := (*Potential)(C.alloc_dvector(C.int(Grid.Size)))
 		V_xc := (*Potential)(C.alloc_dvector(C.int(Grid.Size)))
 		rho := (*DensityDistribution)(C.alloc_dvector(C.int(Grid.Size)))
+		diffCoeffs := (*DifferentialCoefficients)(C.alloc_dvector(C.int(Grid.Size * 4)))
 		// Wavefunctions := calcData.PrepareOrbitals()
 
 		/// the name NormRD is the convention in ADPACK and OpenMX
@@ -99,6 +100,17 @@ func main() {
 			}
 			CalcSum(Grid, V_core, V_hartree, V_xc, V_total)
 			// C.print_dvector2(C.int(Grid.Size), (*C.double)(Grid.R), (*C.double)(V_total), C.CString("%.6f"))
+
+			// for debug
+			var l int = 1
+			var kappa int = 1
+			var epsilon float64 = -1
+			err = CalcDiffMatrix(Grid, V_total, calcData.Input.DFT, l, kappa, epsilon, diffCoeffs)
+			if err != nil {
+				calcSummaries[i].Error = err
+				break
+			}
+			C.print_dvector(C.int(Grid.Size*4), (*C.double)(diffCoeffs), C.CString("%.6f"))
 
 			// SCF check
 			if NormRD < calcData.Input.SCF.Threshold {
@@ -147,6 +159,7 @@ func main() {
 		C.free_dvector((*C.double)(V_hartree))
 		C.free_dvector((*C.double)(V_xc))
 		C.free_dvector((*C.double)(rho))
+		C.free_dvector((*C.double)(diffCoeffs))
 
 	}
 

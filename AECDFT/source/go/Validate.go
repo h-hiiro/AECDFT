@@ -58,5 +58,11 @@ func (input *InputData) Validate() error {
 		return fmt.Errorf("invalid xc type")
 	}
 
+	// DFT: EqType
+	EqTypes := []string{"Sch", "SDirac", "Dirac"}
+	if !slices.Contains(EqTypes, input.DFT.EqType) {
+		return fmt.Errorf("invalid eq type")
+	}
+
 	return nil
 }
