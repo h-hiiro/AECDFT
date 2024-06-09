@@ -42,6 +42,7 @@ These equations can be transfomed the the ones used in the ADPACK [(Link)](https
 - replacing $E-c^2$ by $\varepsilon$ (energy without the mass term)
 - replacing $k$ by $-\kappa\ (\kappa = -(l+1),\ l)$, and
 - exchanging $F(r)$ and $G(r)$.
+
 The final form is
 $$\left(\frac{\partial}{\partial r}-\frac{\kappa}{r}\right) F(r) + \alpha(\varepsilon-V(r))G(r) = 0 $$
 $$\left(\frac{\partial}{\partial r}+\frac{\kappa}{r}\right) G(r) -\alpha\left(\varepsilon-V+\frac{2}{\alpha^2}\right)F(r)=0.$$
@@ -78,6 +79,48 @@ $$\left[\frac{\partial^2}{\partial x^2}+(2l+1)\frac{\partial}{\partial x} +l(l+1
 $$\Longrightarrow \frac{\partial}{\partial x} L(x)=M(x),\ \ 
 \frac{\partial}{\partial x} M(x)=-\left(2l+1+\frac{r\alpha^2}{2m}\frac{\partial V}{\partial r}\right)M(x)+\frac{r\alpha^2}{2m}\frac{\partial V}{\partial r}(l+1+\kappa)L(x)+2mr^2(v(r)-\varepsilon)L(x).$$
 
+In the above transformation, we used $\kappa(\kappa+1)=l(l+1)$ because $\kappa = -(l+1),\ l$.
+
 ## Transformed Scalar Dirac equation
 In the case of the scalar relativistic Dirac equation, the $\kappa$ dependence is averaged.
 Since $\langle\kappa\rangle=[-(l+1)(2l+2)+l\cdot 2l]/(4l+2)=-1$, the $l+1+\kappa$ part in the second term in the RHS is changed to $l$.
+
+# Asymptotic forms
+When we solve the Schroedinger or Dirac equations, we need to set the boundary correction at $r\rightarrow 0$ or $r\rightarrow \infty$.
+The ODEs can be represented by
+$$\left[ \frac{\partial^2}{\partial r^2}+C_1\frac{\partial}{\partial r}+C_0\right]P_{nl}=0,$$
+$$\text{Schroedinger:}\ C_1 = 0,\ C_0 = -\frac{l(l+1)}{r^2}+2(\varepsilon-V(r)),$$
+$$\text{Dirac:}\ C_1 = \frac{\alpha^2}{2m}\frac{\partial V}{\partial r},\ C_2 = \frac{\alpha^2}{2m} \frac{\partial V}{\partial r}\frac{\kappa}{r}-\frac{l(l+1)}{r^2}+2m(\varepsilon-V(r)).$$
+The scalar Dirac equation can be obtained by replacing $\kappa$ by $-1$.
+
+The potential $V(r)$ and the wave function $P_{nl}(r)$ is approximated to a polynomial:
+$$V(r) = \sum_{\nu =0} A_\nu r^\nu,\ P_{nl}(r) = \sum_{\nu=0}B_\nu r^{\nu+l+1}\ \left(L(r)=\sum_{\nu = 0} B_\nu r^\nu \right).$$
+Inserting them, we get
+$$\sum_{\nu = 0}(\nu+l)(\nu+l+1)B_\nu r^{\nu+l-1}-l(l+1) \sum_{\nu = 0} B_\nu r^{\nu+l-1}+2\left[\varepsilon - \sum_{\nu=0}A_\nu r^\nu\right]\sum_{\nu = 0}B_\nu r^{\nu+l+1} =0$$
+for the Schroedinger equation.
+Comparing the power series, we get
+$$r^{l-1}:\ l(l+1)B_0 - l(l+1)B_0 =0\ \therefore B_0=\text{arbitrary}$$
+$$r^{l}:\ (l+1)(l+2)B_1 - l(l+1)B_1 =0\ \therefore B_1=0$$
+$$r^{l+1}: (l+2)(l+3)B_2 - l(l+1) B_2 +2(\varepsilon-A_0)B_0= 0\ \therefore B_2 = B_0 \frac{A_0-\varepsilon}{2l+3}$$
+$$r^{l+2}: (l+3)(l+4) B_3 -l(l+1) B_3 +2(\varepsilon-A_0)B_1-2A_1B_0 = 0\ \therefore B_3 = B_0\frac{A_1}{3l+6}$$
+$$r^{l+3}: (l+4)(l+5)B_4 - l(l+1) B_4 + 2(\varepsilon-A_0)B_2 -2A_1 B_1 + 2A_2 B_0 = 0\ \therefore B_4 = \frac{(A_0-\varepsilon) B_2 +A_2B_0}{4l+10}.$$
+
+The Dirac equation is transformed to 
+$$\sum_{\nu = 0}(\nu+l)(\nu+l+1)B_\nu r^{\nu+l-1}$$
+$$+\frac{\alpha^2}{2m}\sum_{\nu=0}(\nu+1)A_{\nu+1}r^\nu\sum_{\nu=0}(\nu+l+\kappa+1)B_\nu r^{\nu+l}$$
+$$-l(l+1) \sum_{\nu = 0} B_\nu r^{\nu+l-1}+2m\left[\varepsilon - \sum_{\nu=0}A_\nu r^\nu\right]\sum_{\nu = 0}B_\nu r^{\nu+l+1} =0.$$
+Therefore, the solution is
+
+$$r^{l-1}:\ l(l+1)B_0 - l(l+1)B_0 =0\ \therefore B_0=\text{arbitrary}$$
+$$r^{l}:\ (l+1)(l+2)B_1 + \frac{\alpha^2}{2m}A_1(l+\kappa+1)B_0 - l(l+1)B_1 =0\ \therefore B_1=-\frac{\alpha^2}{2m} \frac{A_1(l+\kappa+1)}{2l+2}$$
+$$r^{l+1}: (l+2)(l+3)B_2 +\frac{\alpha^2}{2m}(2A_2(l+\kappa+1)+A_1(l+\kappa+2))- l(l+1) B_2 +2m(\varepsilon-A_0)B_0= 0\ \therefore B_2 = mB_0 \frac{A_0-\varepsilon}{2l+3}-\frac{\alpha^2}{2m}\frac{2A_1(l+\kappa+1)+A_1(l+\kappa+2)}{4l+6}$$
+$$r^{l+2}: (l+3)(l+4) B_3 +\frac{\alpha^2}{2m} \sum_{\nu=1}^3 \nu A_\nu(l+\kappa+4-\nu)-l(l+1) B_3 +2m(\varepsilon-A_0)B_1-2mA_1B_0 = 0$$
+$$\therefore B_3 = mB_0\frac{A_1}{3l+6}-\frac{\alpha^2}{2m}\frac{\sum_{\nu=1}^3 \nu A_\nu(l+\kappa+4-\nu)}{6l+12}$$
+$$r^{l+3}: (l+4)(l+5)B_4 +\frac{\alpha^2}{2m}\sum_{\nu=1}^4 \nu A_\nu (l+\kappa+5-\nu)- l(l+1) B_4 + 2m(\varepsilon-A_0)B_2 -2mA_1 B_1 + 2mA_2 B_0 = 0$$
+$$\therefore B_4 = m\frac{(A_0-\varepsilon) B_2 +A_2B_0}{4l+10}-\frac{\alpha^2}{2m}\frac{\sum_{\nu=1}^4 \nu A_\nu (l+\kappa+5-\nu)}{8l+20}.$$
+
+Next is the asymptotic form at $r\rightarrow\infty$.
+Since the $V(r)$ and $r^{-n}$ terms vanish, the asymptotic equation is
+$$\left[\frac{\partial^2}{\partial r^2} +2m\varepsilon\right] P_{nl}(r)=0\ (m=1\ \text{for Schroedinger equation})$$
+Therefore,
+$$P_{nl}(r)\rightarrow \exp(-\sqrt{2m\varepsilon}\cdot r).$$
