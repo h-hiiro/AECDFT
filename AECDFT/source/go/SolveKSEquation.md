@@ -113,7 +113,7 @@ Therefore, the solution is
 
 $$r^{l-1}:\ l(l+1)B_0 - l(l+1)B_0 =0\ \therefore B_0=\text{arbitrary}$$
 $$r^{l}:\ (l+1)(l+2)B_1 + \frac{\alpha^2}{2m}A_1(l+\kappa+1)B_0 - l(l+1)B_1 =0\ \therefore B_1=-\frac{\alpha^2}{2m} \frac{A_1(l+\kappa+1)}{2l+2}$$
-$$r^{l+1}: (l+2)(l+3)B_2 +\frac{\alpha^2}{2m}(2A_2(l+\kappa+1)+A_1(l+\kappa+2))- l(l+1) B_2 +2m(\varepsilon-A_0)B_0= 0\ \therefore B_2 = mB_0 \frac{A_0-\varepsilon}{2l+3}-\frac{\alpha^2}{2m}\frac{2A_1(l+\kappa+1)+A_1(l+\kappa+2)}{4l+6}$$
+$$r^{l+1}: (l+2)(l+3)B_2 +\frac{\alpha^2}{2m}(2A_2(l+\kappa+1)+A_1(l+\kappa+2))- l(l+1) B_2 +2m(\varepsilon-A_0)B_0= 0\ \therefore B_2 = mB_0 \frac{A_0-\varepsilon}{2l+3}-\frac{\alpha^2}{2m}\frac{2A_2(l+\kappa+1)+A_1(l+\kappa+2)}{4l+6}$$
 $$r^{l+2}: (l+3)(l+4) B_3 +\frac{\alpha^2}{2m} \sum_{\nu=1}^3 \nu A_\nu(l+\kappa+4-\nu)-l(l+1) B_3 +2m(\varepsilon-A_0)B_1-2mA_1B_0 = 0$$
 $$\therefore B_3 = mB_0\frac{A_1}{3l+6}-\frac{\alpha^2}{2m}\frac{\sum_{\nu=1}^3 \nu A_\nu(l+\kappa+4-\nu)}{6l+12}$$
 $$r^{l+3}: (l+4)(l+5)B_4 +\frac{\alpha^2}{2m}\sum_{\nu=1}^4 \nu A_\nu (l+\kappa+5-\nu)- l(l+1) B_4 + 2m(\varepsilon-A_0)B_2 -2mA_1 B_1 + 2mA_2 B_0 = 0$$

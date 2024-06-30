@@ -6,29 +6,29 @@ import (
 )
 
 func (input *InputData) Validate() error {
-	// Title: 1 <= length <= 128
+	// 1 <= len(Title) <= 128
 	if !(1 <= len(input.Title) && len(input.Title) <= 128) {
 		return fmt.Errorf("title length should be in [1, 128]")
 	}
 
-	// Grid: XMin<XMax
+	// Grid.XMin < Grid.XMax
 	if !(input.Grid.XMin < input.Grid.XMax) {
 		return fmt.Errorf("invalid grid range")
 	}
 
-	// Atom: 1 <= Z <= 118
+	// 1 <= Atom.Z <= 118
 	if !(1 <= input.Atom.Z && input.Atom.Z <= 118) {
 		return fmt.Errorf("invalid atomic number")
 	}
-	// Atom: LMax >= 0
+	// Atom.LMax >= 0
 	if !(0 <= input.Atom.LMax) {
 		return fmt.Errorf("invalid maximum l")
 	}
-	// Atom: NMax >= 1
+	// Atom.NMax >= 1
 	if !(1 <= input.Atom.NMax) {
 		return fmt.Errorf("invalid maximum n")
 	}
-	// Occupied: size check
+	// Atom.Occupancies: size check
 	if !(len(input.Atom.Occupancies) == input.Atom.NMax) {
 		return fmt.Errorf("invalid first dimension size of occupancies array")
 	}
@@ -39,7 +39,7 @@ func (input *InputData) Validate() error {
 			return fmt.Errorf("invalid second dimension size of occupancies array [%d]", nm1)
 		}
 	}
-	// Occupancies: 2(l+1) >= [n-1][l] >= 0
+	// 2(2l+1) >= Atom.Occupancies[n-1][l] >= 0
 	for nm1, occ_n := range input.Atom.Occupancies {
 		for l, occ_nl := range occ_n {
 			if !(-1e-5 <= occ_nl && occ_nl <= float64(2*(2*l+1))+1e-5) {
@@ -47,21 +47,29 @@ func (input *InputData) Validate() error {
 			}
 		}
 	}
-	// SCF: 1 <= MaxIteration
+	// 1 <= SCF.MaxIteration
 	if !(1 <= input.SCF.MaxIteration) {
 		return fmt.Errorf("invalid maximum iteration")
 	}
 
-	// DFT: XCType
+	// DFT.XCType: keyword in list
 	XCTypes := []string{"Xa-Slater", "LDA-CA", "LDA-VWN", "GGA-PBE"}
 	if !slices.Contains(XCTypes, input.DFT.XCType) {
 		return fmt.Errorf("invalid xc type")
 	}
 
-	// DFT: EqType
+	// DFT.EqType: keyword in list
 	EqTypes := []string{"Sch", "SDirac", "Dirac"}
 	if !slices.Contains(EqTypes, input.DFT.EqType) {
 		return fmt.Errorf("invalid eq type")
+	}
+
+	// Atom.OccupancyRule_Dirac: keyword in list
+	if input.DFT.EqType == "Dirac" {
+		OccupancyRules_Dirac := []string{"one-half", "proportional", "l-1/2", "l+1/2"}
+		if !slices.Contains(OccupancyRules_Dirac, input.Atom.OccupancyRule_Dirac) {
+			return fmt.Errorf("invalid occupancy rule")
+		}
 	}
 
 	return nil

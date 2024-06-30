@@ -37,12 +37,13 @@ type Grid_conf struct {
 }
 
 type Atom_conf struct {
-	Z            float64
-	LMax         int
-	NMax         int
-	Occupancies  [][]float64
-	NumElectrons float64
-	NumOrbitals  int
+	Z                   float64
+	LMax                int
+	NMax                int
+	Occupancies         [][]float64
+	NumElectrons        float64
+	NumOrbitals         int
+	OccupancyRule_Dirac string
 }
 
 type TF_conf struct {
@@ -69,6 +70,7 @@ type OutputData struct {
 type Eigenstate struct {
 	N         int
 	L         int
+	Kappa     int
 	Occupancy float64
 	E         float64
 }
