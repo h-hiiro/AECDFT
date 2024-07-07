@@ -124,3 +124,17 @@ Since the $V(r)$ and $r^{-n}$ terms vanish, the asymptotic equation is
 $$\left[\frac{\partial^2}{\partial r^2} +2m\varepsilon\right] P_{nl}(r)=0\ (m=1\ \text{for Schroedinger equation})$$
 Therefore,
 $$P_{nl}(r)\rightarrow \exp(-\sqrt{2m\varepsilon}\cdot r).$$
+
+## Potential fitting
+We need to determine the polynomial coefficient $A_i$.
+Here we use $n-1$-th order polynomial to determine $A_i\ (i=0,\ \cdots, n-1)$.
+See [Fit_potential.cpp](../cpp/Fit_potential.cpp) for the implementation.
+
+Given the first $n$ points $(r_i, V_i)$ and the polynomial
+$$V(r) = \sum_{\nu = 0}^{n-1} A_i r_i^\nu,$$
+The polynomial coefficients $A_i$ satisfies
+$$\begin{pmatrix}1 & r_0 & \cdots & r_0^{n-1} \\
+1 & r_1 & \cdots & r_1^{n-1} \\
+\vdots & \vdots & \ddots & \vdots \\
+1 & r_{n-1} & \cdots & r_{n-1}^{n-1} \end{pmatrix}\begin{pmatrix}A_0 \\ A_1 \\ \vdots \\ A_{n-1}\end{pmatrix} = \begin{pmatrix}V_0 \\ V_1 \\ \vdots \\ V_{n-1} \end{pmatrix}.$$
+This linear equation can be solved by the `dgesv` routine in LAPACK.

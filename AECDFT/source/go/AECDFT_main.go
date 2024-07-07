@@ -1,7 +1,7 @@
 package main
 
 /*
-#cgo LDFLAGS: -L../cpp -laecdft -lstdc++ -lm -static
+#cgo LDFLAGS: -L../cpp -laecdft -L/source/lapack/lapack-3.12.0 -llapack -lrefblas -ldl  -lgfortran -lquadmath -lstdc++ -lm -static
 #include "../cpp/LibAECDFT.hpp"
 */
 import "C"

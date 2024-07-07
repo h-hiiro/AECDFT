@@ -13,6 +13,8 @@ func (calcData *CalcData) PerformSCFCalc() error {
 	V_core := (*Potential)(C.alloc_dvector(C.int(Grid.Size)))
 	V_hartree := (*Potential)(C.alloc_dvector(C.int(Grid.Size)))
 	V_xc := (*Potential)(C.alloc_dvector(C.int(Grid.Size)))
+	V_total_fit := (*Potential)(C.alloc_dvector(C.int(Grid.Size)))
+	V_fit_coeffs := C.alloc_dvector(C.int(calcData.Input.DFT.PotentialFittingOrder))
 	rho := (*DensityDistribution)(C.alloc_dvector(C.int(Grid.Size)))
 	diffCoeffs := (*DifferentialCoefficients)(C.alloc_dvector(C.int(Grid.Size * 4)))
 	if err := calcData.PrepareEigenstateArray(); err != nil {
@@ -25,6 +27,8 @@ func (calcData *CalcData) PerformSCFCalc() error {
 	defer C.free_dvector((*C.double)(V_core))
 	defer C.free_dvector((*C.double)(V_hartree))
 	defer C.free_dvector((*C.double)(V_xc))
+	defer C.free_dvector((*C.double)(V_total_fit))
+	defer C.free_dvector(V_fit_coeffs)
 	defer C.free_dvector((*C.double)(rho))
 	defer C.free_dvector((*C.double)(diffCoeffs))
 
@@ -53,6 +57,9 @@ func (calcData *CalcData) PerformSCFCalc() error {
 		}
 		CalcSum(Grid, V_core, V_hartree, V_xc, V_total)
 		// C.print_dvector2(C.int(Grid.Size), (*C.double)(Grid.R), (*C.double)(V_total), C.CString("%.6f"))
+
+		// Potential fitting
+		FitPotential(Grid, V_total, calcData.Input.DFT.PotentialFittingOrder, V_fit_coeffs, V_total_fit)
 
 		// for debug
 		var l int = 1

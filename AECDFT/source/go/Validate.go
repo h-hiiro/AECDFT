@@ -64,6 +64,11 @@ func (input *InputData) Validate() error {
 		return fmt.Errorf("invalid eq type")
 	}
 
+	// DFT.PotentialFittingOrder >= 2
+	if !(input.DFT.PotentialFittingOrder >= 2) {
+		return fmt.Errorf("too small potential fitting order")
+	}
+
 	// Atom.OccupancyRule_Dirac: keyword in list
 	if input.DFT.EqType == "Dirac" {
 		OccupancyRules_Dirac := []string{"one-half", "proportional", "l-1/2", "l+1/2"}

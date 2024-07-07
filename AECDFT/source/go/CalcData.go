@@ -58,9 +58,10 @@ type SCF_conf struct {
 }
 
 type DFT_conf struct {
-	XCType   string
-	Xa_alpha float64
-	EqType   string
+	XCType                string
+	Xa_alpha              float64
+	EqType                string
+	PotentialFittingOrder int
 }
 
 type OutputData struct {

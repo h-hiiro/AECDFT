@@ -28,6 +28,7 @@
     "DFT": {
         "XCType": "", // Xa-Slater, LDA-CA, LDA-VWN, or GGA-PBE, Required
         "Xa_alpha": 0.70, // Valid only when XCType == Xa-Slater
-        "EqType": "Sch" // Sch, SDirac, Dirac
+        "EqType": "Sch", // Sch, SDirac, Dirac
+        "PotentialFittingOrder": 3 // >= 2
     }
 }
