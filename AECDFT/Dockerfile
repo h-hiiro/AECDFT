@@ -17,4 +17,4 @@ FROM busybox:latest
 WORKDIR /work
 COPY --from=builder /source/go/AECDFT AECDFT.o
 COPY default/input_default.jsonc ./
-ENV AECDFT_TZ Asia/Tokyo
+ENV AECDFT_TZ=Asia/Tokyo
